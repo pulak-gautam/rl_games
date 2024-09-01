@@ -247,6 +247,13 @@ def create_diambra_env(**kwargs):
     env = DiambraEnv(**kwargs)
     return env
 
+def create_quadrupped_env(**kwargs):
+    import quadruped_pend_gym
+    env = gym.make(**kwargs)
+    env = gym.wrappers.FlattenObservation(env)  
+    env = gym.wrappers.RecordEpisodeStatistics(env)
+    return env
+
 def create_env(name, **kwargs):
     steps_limit = kwargs.pop('steps_limit', None)
     env = gym.make(name, **kwargs)
@@ -428,6 +435,10 @@ configurations = {
         'env_creator': lambda **kwargs: create_cule(**kwargs),
         'vecenv_type': 'CULE'
     },
+    'quadruped_gym' : {
+        'env_creator' : lambda **kwargs : create_quadrupped_env(**kwargs),
+        'vecenv_type' : 'RAY'
+    }
 }
 
 def get_env_info(env):
